@@ -10,16 +10,17 @@ const libroSchema = Joi.object({
 
 // Obtener todos los libros
 
-router.get('/routes/', (req, res, next) => {
-    try {res.json(libros);
-} catch (err) {
-    next(err);
+router.get('/', (req, res, next) => {
+    try {
+        res.json(libros);
+    }   catch (err) {
+        next(err);
     }
 });
 
 //Obtener un libro por ID
 
-router.get('/:id', (req, res, next) =>{
+router.get('/:id', (req, res, next) => {
     try {
         const id = req.params.id;
         const libro = libros.find((l) => l.id === id);
@@ -31,9 +32,9 @@ router.get('/:id', (req, res, next) =>{
         }
 
         res.json(libro);
-        } catch (err) {
-            next(err);
-        }
+    }   catch (err) {
+        next(err);
+    }
 });
 
 // Crear un nuevo libro
@@ -50,7 +51,7 @@ router.post('/', (req, res, next) => {
     const {titulo, autor} = value;
 
     const nuevoLibro = {
-        id: libros.lenght + 1,
+        id: libros.length + 1,
         titulo,
         autor
     };
@@ -74,6 +75,16 @@ router.put('/:id', (req, res, next) => {
         validationError.details = error.details.map(detail =>
             detail.message);
             throw validationError;
+    }
+
+    const {titulo, autor } = value;
+
+    const libro = libros.find((l) => l.id === id)
+
+    if (!libro) {
+        const error = new Error('Libro no encontrado');
+        error.status = 404;
+        throw error;
     }
 
     libro.titulo = titulo || libro.titulo;
@@ -100,7 +111,7 @@ router.delete('/:id', (req, res, next) => {
 
         const libroEliminado = libros.splice(index, 1);
         res.json(libroEliminado[0]);
-    } catch (err) {
+    }   catch (err) {
         next (err)
     };
 });

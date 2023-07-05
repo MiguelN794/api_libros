@@ -6,7 +6,7 @@ const librosRouter = require('./routes/libros'); //variable de importacion de Ro
 
 const errorHandler = require('./middlewares/errorHandler'); //Importamos el Middleware Error Handler
 
-app.use('./routes/libros', librosRouter);
+app.use('/libros', librosRouter);
 
 app.use(errorHandler);
 
